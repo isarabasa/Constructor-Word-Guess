@@ -57,10 +57,30 @@ function playGame() {
                     playGame();
                 } else {
                     var wordCheck = [];
+
                     computerWord.userGuess(input.userInput);
                     computerWord.objArray.forEach(wordCheck);
+
                     if (wordCheck.join("") === wordComplete.join("")) {
                         console.log("\nIncorrect\n");
+
+                        incorrectWord.push(input.userInput);
+                        totalGuesses--;
+                    } else {
+                        console.log("\nCorrect\n");
+                        correctWord.push(input.userInput);
+                    }
+                    computerWord();
+                    console.log("Guesses Left: " + totalGuesses + "\n");
+                    console.log("Letters Guessed: " + incorrectWord.join(" ") + "\n");
+
+                    if (totalGuesses > 0) {
+                        playGame();
+                    } else {
+                        console.log("You lost");
+                    }
+                    function wordsCheck(key) {
+                        wordCheck.push(key.guessed);
                     }
                 }
             }
@@ -68,5 +88,28 @@ function playGame() {
     } else {
         console.log("YOU WIN");
     }
+    function completecheck(key) {
+        wordComplete.push(key.guessed);
+    }
+};
+function restartGame() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to: ",
+            choices: ["Play again", "Exit"],
+            name: "restart"
+        }
+    ]).then(function(input){
+        if (input.restart === "Play again") {
+            requireWord = true;
+            incorrectWord = [];
+            correctWord = [];
+            totalGuesses = 10;
+            playGame();
+        } else {
+            return;
+        }
+    });
 }
-
+playGame();
