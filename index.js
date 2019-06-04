@@ -1,9 +1,3 @@
-// The file containing the logic for the course of the game, which depends on `Word.js` and:
-
-//   * Randomly selects a word and uses the `Word` constructor to store it
-
-//   * Prompts the user for each guess and keeps track of the user's remaining guesses
-
 
 var word = require("./word");
 var inquirer = require("inquirer");
@@ -20,30 +14,59 @@ var GOTcharacters = [
     "Grey Worm", "Davos Seaworth", "Olenna Tyrell", "The Night King", "Drogon", "Rhaegal", "Viserion", "Lyanna Star", 
 ];
 
-// Random loop (look for the math.floor function)
+var randomIndex = Math.floor(Math.random() * GOTcharacters.length);
+var randomWord = GOTcharacters[randomIndex];
 
-// random word variable thats created from the GOTcharacters random
+var computerWord = new word(randomWord);
+var requireWord = false;  
 
-// create de computer word. it would be made from the word constructor, thats making a random word.
+var incorrectWord = [];
+var correctWord = [];
 
-// set our require new word with the boolean false 
-
-// var array for incorrect and correct answer
-
-// create variable that sets the guesses to 10
-
-// create main function that handles all the logic
-
-        // start with an if statement that will generate the new word from the word constructor that selects
-        // random GOTcharacters
-
-        // create array that hold the word thats complete. First create variable
-
-        // create if statement with inquierer.prompt
-        // then the .then(function(input)
-            // for the "if statement determine if the letter is not included in the user input
+var totalGuesses = 10;
 
 
+function playGame() {
+    if (requireWord) {
+        var randomIndex = Math.floor(Math.random() * GOTcharacters.length);
+        var randomWord = GOTcharacters[randomIndex];
+        var computerWord = new word(randomWord);
+        var requireWord = false;  
 
-        // else: console.log(you win)
+    }
+    var wordComplete = [];
+
+    if (wordComplete.includes(false)) {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Select a letter",
+                name: "userInput"
+            }
+        ]).then(function(input){
+            if(!lettersArray.includes(input.userInput) || input.userInput.length > 1) {
+                console.log("\nTry again!\n");
+                playGame();
+            } else {
+                if (
+                incorrectWord.includes(input.userInput) || 
+                correctWord.includes(input.userInput) || 
+                input.userInput === ""
+                ) {
+                    console.log("\nAlready guessed\n");
+                    playGame();
+                } else {
+                    var wordCheck = [];
+                    computerWord.userGuess(input.userInput);
+                    computerWord.objArray.forEach(wordCheck);
+                    if (wordCheck.join("") === wordComplete.join("")) {
+                        console.log("\nIncorrect\n");
+                    }
+                }
+            }
+        });
+    } else {
+        console.log("YOU WIN");
+    }
+}
 
